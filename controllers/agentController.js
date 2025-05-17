@@ -34,7 +34,6 @@ exports.createAgent = async (req, res) => {
 			}
 		});
 	} catch (error) {
-		console.error("Create agent error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"
@@ -52,7 +51,6 @@ exports.getAgents = async (req, res) => {
 			data: agents
 		});
 	} catch (error) {
-		console.error("Get agents error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"
@@ -93,7 +91,6 @@ exports.updateAgent = async (req, res) => {
 			}
 		});
 	} catch (error) {
-		console.error("Update agent error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"
@@ -121,7 +118,6 @@ exports.deleteAgent = async (req, res) => {
 			message: "Agent deleted successfully"
 		});
 	} catch (error) {
-		console.error("Delete agent error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"

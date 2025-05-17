@@ -7,12 +7,7 @@ const path = require("path");
 // Upload and distribute CSV
 exports.uploadAndDistribute = async (req, res) => {
 	try {
-		console.log("Request received in uploadAndDistribute");
-		console.log("Request file:", req.file);
-		console.log("Request body:", req.body);
-
 		if (!req.file) {
-			console.log("No file found in request");
 			return res.status(400).json({
 				success: false,
 				message: "Please upload a CSV file"
@@ -20,11 +15,8 @@ exports.uploadAndDistribute = async (req, res) => {
 		}
 
 		const filePath = req.file.path;
-		console.log("File path:", filePath);
-
 		const results = [];
 		const agents = await Agent.find({ status: "active" });
-		console.log("Active agents found:", agents.length);
 
 		if (agents.length === 0) {
 			return res.status(400).json({
@@ -38,16 +30,12 @@ exports.uploadAndDistribute = async (req, res) => {
 			fs.createReadStream(filePath)
 				.pipe(csv())
 				.on("data", (data) => {
-					console.log("CSV row:", data);
 					results.push(data);
 				})
 				.on("end", () => {
-					console.log("CSV reading completed");
-					console.log("Total rows:", results.length);
 					resolve();
 				})
 				.on("error", (error) => {
-					console.error("CSV reading error:", error);
 					reject(error);
 				});
 		});
@@ -55,10 +43,8 @@ exports.uploadAndDistribute = async (req, res) => {
 		// Validate CSV format
 		const requiredFields = ["FirstName", "Phone", "Notes"];
 		const firstRow = results[0];
-		console.log("First row of CSV:", firstRow);
 
 		const missingFields = requiredFields.filter(field => !(field in firstRow));
-		console.log("Missing fields:", missingFields);
 
 		if (missingFields.length > 0) {
 			return res.status(400).json({
@@ -105,7 +91,6 @@ exports.uploadAndDistribute = async (req, res) => {
 			}
 		});
 	} catch (error) {
-		console.error("Upload and distribute error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"
@@ -127,7 +112,6 @@ exports.getListsByAgent = async (req, res) => {
 			data: lists
 		});
 	} catch (error) {
-		console.error("Get lists error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"
@@ -157,7 +141,6 @@ exports.updateListStatus = async (req, res) => {
 			data: list
 		});
 	} catch (error) {
-		console.error("Update list status error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Internal server error"

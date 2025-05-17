@@ -14,8 +14,8 @@ mongoose
 		useUnifiedTopology: true,
 		dbName: "agentDB",
 	})
-	.then(() => console.log("MongoDB connected"))
-	.catch((err) => console.error(err));
+	.then(() => {})
+	.catch((err) => {});
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
