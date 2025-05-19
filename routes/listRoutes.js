@@ -5,7 +5,8 @@ const path = require("path");
 const {
 	uploadAndDistribute,
 	getListsByAgent,
-	updateListStatus
+	updateListStatus,
+	getAllLists
 } = require("../controllers/listController");
 const { protect } = require("../middleware/auth");
 
@@ -68,5 +69,6 @@ router.post("/upload", (req, res) => {
 
 router.get("/agent/:agentId", getListsByAgent);
 router.put("/:id/status", updateListStatus);
+router.get("/", getAllLists);
 
 module.exports = router;

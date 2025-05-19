@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Upload and distribute CSV
-exports.uploadAndDistribute = async (req, res) => {
+const uploadAndDistribute = async (req, res) => {
 	try {
 		if (!req.file) {
 			return res.status(400).json({
@@ -99,7 +99,7 @@ exports.uploadAndDistribute = async (req, res) => {
 };
 
 // Get lists by agent
-exports.getListsByAgent = async (req, res) => {
+const getListsByAgent = async (req, res) => {
 	try {
 		const { agentId } = req.params;
 
@@ -120,7 +120,7 @@ exports.getListsByAgent = async (req, res) => {
 };
 
 // Update list status
-exports.updateListStatus = async (req, res) => {
+const updateListStatus = async (req, res) => {
 	try {
 		const { id } = req.params;
 		const { status } = req.body;
@@ -146,4 +146,32 @@ exports.updateListStatus = async (req, res) => {
 			message: "Internal server error"
 		});
 	}
+};
+
+// Get all lists
+const getAllLists = async (req, res) => {
+	try {
+		const lists = await List.find()
+			.populate('agentId', 'name email')
+			.sort({ createdAt: -1 });
+			
+		res.status(200).json({
+			success: true,
+			count: lists.length,
+			data: lists
+		});
+	} catch (error) {
+		console.error('Error in getAllLists:', error);
+		res.status(500).json({
+			success: false,
+			message: error.message || 'Error fetching lists'
+		});
+	}
+};
+
+module.exports = {
+	uploadAndDistribute,
+	getListsByAgent,
+	updateListStatus,
+	getAllLists
 };
